@@ -1,56 +1,99 @@
-#include <stdio.h>
-#include <stdlib.h>
-int n,a[20],max,ini,total,i;
+#include<stdio.h>
+#include<stdlib.h>
+
+int arr[25],n,max,intial,small;
+
+void sort(int arr[],int n)
+{
+    int i,j,temp;
+    for(i=0;i<n-1;i++)
+    {
+        for(j=0;j<n-i-1;j++)
+        {
+            if(arr[j]>arr[j+1])
+            {
+                temp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=temp;
+            }
+        }
+    }
+}
 void fcfs()
 {
-        total=abs(ini-a[0]);
-        for(i=0;i<n-1;i++)
-        {
-                total+=abs(a[i+1]-a[i]);
-        }
-        printf("FCFS total head movement(seek time)=%d\n",total);
+    int seek,i;
+    seek=abs(arr[0]-intial);
+    for(i=0;i<n-1;i++)
+    {
+        seek+=abs(arr[i+1]-arr[i]);
+    }
+    printf("\ntotal seek time in fcfs scheduling is: %d",seek);
 }
-void scan()
+
+void scanr()
 {
-        int small=max;
-        for(i=0;i<n;i++)
-        {
-                if(a[i]<small)
-                {
-                        small=a[i];
-                }
-        }
-        total=abs(max-ini)+abs(max-small);
-        printf("SCAN total head movement(seek time)=%d\n",total);
+    sort(arr,n);
+    int small=arr[0];
+    int seek=abs(max-intial)+abs(max-small);
+    printf("\ntotal seek time in scan right direction scheduling is: %d",seek);
 }
-void cscan()
+void scanl()
 {
-        int large=0;
-        for(i=0;i<n;i++)
-        {
-                if(a[i]>large && a[i]<ini)
-                {
-                        large=a[i];
-                }
-        }
-        total=abs(max-ini)+max+large;
-        printf("CSCAN total head movement(seek time)=%d\n",total);
+    sort(arr,n);
+    int large=arr[n-1];
+    int seek=intial+large;
+    printf("\ntotal seek time in scan left direction scheduling is: %d",seek);
 }
-void main()
+void cscanr()
 {
-        printf("Enter the number of requests: ");
-        scanf("%d",&n);
-        printf("Enter the requests: ");
-        for(i=0;i<n;i++)
+    sort(arr,n);
+    int preceeding=arr[0],i;
+    for(i=0;i<n;i++)
+    {
+        if(arr[i]>intial)
         {
-                scanf("%d",&a[i]);
+            break;
         }
-        printf("Enter the total disc size: ");
-        scanf("%d",&max);
-        max--;
-        printf("Enter the starting position: ");
-        scanf("%d",&ini);
-        fcfs();
-        scan();
-        cscan();
+        preceeding=arr[i];
+    }
+    int seek=abs(intial-max)+max+preceeding;
+    printf("\ntotal seek time in cscan right direction scheduling is: %d",seek);
+}
+void cscanl()
+{
+    sort(arr,n);
+    int preceeding=arr[0],i;
+    for(i=0;i<n;i++)
+    {   
+        preceeding=arr[i];
+        if(arr[i]>intial)
+        {
+            break;
+        }
+
+    }
+    int seek=abs(intial-max)+max+preceeding;
+    printf("\ntotal seek time in cscan right direction scheduling is: %d",seek);
+}
+
+
+
+int main()
+{
+    printf("Enter the no of request: ");
+    scanf("%d",&n);
+    printf("Enter the requests ");
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&arr[i]);
+    }
+    printf("Enter the max size of disc: ");
+    scanf("%d",&max);
+    printf("Enter the initial positon of disk head");
+    scanf("%d",&intial);
+    fcfs();
+    scanr();
+    scanl();
+    cscanr();
+    cscanl();
 }
