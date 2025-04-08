@@ -1,3 +1,6 @@
+# SYSTEM SOFTWARE LAB (S5)
+# Questions
+
 1.To simulate following CPU scheduling algorithms to find turnaround time and waiting time :
 
 a) FCFS
